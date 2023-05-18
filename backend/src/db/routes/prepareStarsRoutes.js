@@ -48,24 +48,22 @@ const prepareStarsRoutes = ({ app, db }) => {
           return; 
         }
 
-        const review = await SessionReviewModel.query()
-          .select("*")
-          .where("idSession", idSession)
+        const review = await SessionReviewModel.query().findOne({ idSession: idSession });
 
-        if (review[0].idMentor !== idMentor || review[0].idStudent !== idStudent) {
+        if (review.idMentor !== idMentor || review.idStudent !== idStudent) {
           res.status(403).send({ error: "These users are not related to this session." })
           return;
         }
                 
-        if (review.length) {
-          if (review[0].star === false) {
+        if (review) {
+          if (review.star === false) {
             await SessionReviewModel.query()
             .update({ 
               star: true
             })
             .where("idSession", idSession)
-            .andWhere("idMentor", review[0].idMentor)
-            .andWhere("idStudent", review[0].idStudent)
+            .andWhere("idMentor", review.idMentor)
+            .andWhere("idStudent", review.idStudent)
             
             res.send({ message: "Star updated to the mentor on this session !" });
             return;
@@ -78,8 +76,8 @@ const prepareStarsRoutes = ({ app, db }) => {
         await SessionReviewModel.query()
           .insert({ 
             idSession: idSession,
-            idMentor: review[0].idMentor,
-            idStudent: review[0].idStudent,
+            idMentor: review.idMentor,
+            idStudent: review.idStudent,
             star: true
           })
           .returning("*")
@@ -134,24 +132,22 @@ const prepareStarsRoutes = ({ app, db }) => {
           return; 
         }
 
-        const review = await SessionReviewModel.query()
-          .select("*")
-          .where("idSession", idSession)
+        const review = await SessionReviewModel.query().findOne({ idSession: idSession });
 
-        if (review[0].idMentor !== idMentor || review[0].idStudent !== idStudent) {
+        if (review.idMentor !== idMentor || review.idStudent !== idStudent) {
           res.status(403).send({ error: "These users are not related to this session." })
           return;
         }
                 
-        if (review.length) {
-          if (review[0].star === true) {
+        if (review) {
+          if (review.star === true) {
             await SessionReviewModel.query()
             .update({ 
               star: false
             })
             .where("idSession", idSession)
-            .andWhere("idMentor", review[0].idMentor)
-            .andWhere("idStudent", review[0].idStudent)
+            .andWhere("idMentor", review.idMentor)
+            .andWhere("idStudent", review.idStudent)
             
             res.send({ message: "Star updated to the mentor on this session !" });
             return;
@@ -164,8 +160,8 @@ const prepareStarsRoutes = ({ app, db }) => {
         await SessionReviewModel.query()
           .insert({ 
             idSession: idSession,
-            idMentor: review[0].idMentor,
-            idStudent: review[0].idStudent,
+            idMentor: review.idMentor,
+            idStudent: review.idStudent,
             star: false
           })
           .returning("*")
