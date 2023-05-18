@@ -17,9 +17,8 @@ const prepareStarsRoutes = ({ app, db }) => {
       }
     }),
     async (req, res) => {
-      const idSession = req.params.idSession;
-      const idMentor = req.body.idMentor;
-      const idStudent = req.body.idStudent; 
+      const { idSession } = req.params;
+      const { idMentor, idStudent } = req.body;
 
       try {
         const session = await SessionModel.query().findOne({ id: idSession })
@@ -101,9 +100,8 @@ const prepareStarsRoutes = ({ app, db }) => {
       }
     }),
     async (req, res) => {
-      const idSession = req.params.idSession; 
-      const idMentor = req.body.idMentor;
-      const idStudent = req.body.idStudent; 
+      const { idSession } = req.params;
+      const { idMentor, idStudent } = req.body;
 
       try {
         const session = await SessionModel.query().findOne({ id: idSession })
